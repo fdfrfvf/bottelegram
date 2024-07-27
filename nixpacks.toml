@@ -2,5 +2,8 @@
 builder = "nixpacks"
 runtime = "python"
 
+[commands.build]
+command = "echo Building..."
+
 [commands.start]
 command = "python bot.py"
