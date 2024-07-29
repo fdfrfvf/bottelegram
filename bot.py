@@ -31,7 +31,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         # Boutons
         keyboard = [
             [InlineKeyboardButton("Claim Airdrop 🎁", url=MINI_APP_URL)],
-            [InlineKeyboardButton("News Twitter/X", url='https://x.com/thenotcoin')]
+            [InlineKeyboardButton("News Twitter/X", url='https://x.com/ethStaker')]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
