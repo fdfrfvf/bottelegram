@@ -10,7 +10,7 @@ logging.basicConfig(
 )
 
 # Remplace TOKEN par le token de ton bot
-TOKEN = '7454422753:AAFQ6zu0v-7L9cNDjDFfVUXyVPkRg9NQtB8'
+TOKEN = '7366399961:AAEdf4Sp0a4vbpF6QgXDykXqrzL0bmpHJa0'
 IMAGE_URL = 'https://drive.google.com/uc?export=download&id=14DZxx8aTCur1e1pcYhhB647NHqoj-58E'
 MINI_APP_URL = 't.me/NotcoinxGames_bot/NotcoinGamesAirdrop'  # Remplace par l'URL de ta mini app
 

@@ -1,9 +1,0 @@
-[build]
-builder = "nixpacks"
-runtime = "python:3.9"
-
-[commands.build]
-command = "pip install -r requirements.txt"
-
-[commands.start]
-command = "python bot.py"
