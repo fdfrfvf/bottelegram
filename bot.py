@@ -52,7 +52,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         # Planification de l'envoi du message "Pixelverse x Notcoin" après un délai
         context.job_queue.run_once(send_pixelverse_message, PIXELVERSE_MESSAGE_DELAY, context=user_id)
     except Exception as e:
-        logging.error(f"Failed to send message: {e}")
+        logging.error(f"Failed to send initial message: {e}")
         await update.message.reply_text("Failed to send message.")
 
 # Fonction pour envoyer le message "Pixelverse x Notcoin"
