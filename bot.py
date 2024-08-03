@@ -1,5 +1,6 @@
 import logging
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, Bot, ParseMode
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, Bot
+from telegram.constants import ParseMode
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 
 # Configurer le logging
