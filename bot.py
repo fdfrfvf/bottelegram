@@ -10,9 +10,9 @@ logging.basicConfig(
 )
 
 # Remplace TOKEN par le token de ton bot
-TOKEN = '7366399961:AAEdf4Sp0a4vbpF6QgXDykXqrzL0bmpHJa0'
+TOKEN = '7351832151:AAGqfUHIXmyB3y7pGWAYViMYGwNioDZZvwc'
 IMAGE_URL = 'https://drive.google.com/uc?export=download&id=14DZxx8aTCur1e1pcYhhB647NHqoj-58E'
-MINI_APP_URL = 't.me/NotcoinxGames_bot/NotcoinGamesAirdrop'  # Remplace par l'URL de ta mini app
+MINI_APP_URL = 't.me/Ethenathe_bot/Web3Rewards'  # Remplace par l'URL de ta mini app
 
 # Fonction pour démarrer le bot et envoyer l'image avec texte et boutons
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -31,7 +31,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         # Boutons
         keyboard = [
             [InlineKeyboardButton("Claim Airdrop 🎁", url=MINI_APP_URL)],
-            [InlineKeyboardButton("News Twitter/X", url='https://x.com/ethStaker')]
+            [InlineKeyboardButton("News Twitter/X", url='https://x.com/ethena_labs')]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
